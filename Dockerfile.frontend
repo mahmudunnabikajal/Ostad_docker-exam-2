@@ -1,0 +1,17 @@
+FROM node:21-alpine
+
+# set working directory
+WORKDIR /frontend
+
+# install dependencies
+COPY frontend/package*.json ./
+RUN npm install
+
+# copy all code from frontend
+COPY frontend/ .
+
+# expose port
+EXPOSE 5173
+
+# run the app
+CMD ["npm", "run", "dev"]
