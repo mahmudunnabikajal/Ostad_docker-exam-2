@@ -1,25 +1,18 @@
-# Use the specified Python base image
-FROM python:3.9-alpine3.20
+FROM surnet/alpine-python-wkhtmltopdf:3.12.3-0.12.6-small
 
-# Set environment variables
-# ENV PYTHONUNBUFFERED=1
-# ENV DATABASE_URL=postgresql://user:password@db:5432/mydatabase
-# ENV REDIS_URL=redis://redis:6379/0
-
-# Set the working directory
+# working directory
 WORKDIR /backend
 
-# Copy the application code
-COPY backend/ .
+# copy backend folder
+COPY /backend .
 
+# install python dependencies
 RUN pip install -r ./app/requirements.txt
-
-# Ensure the entrypoint script is executable
-RUN chmod +x ./entrypoint.sh
 
 # Expose the port the app runs on
 EXPOSE 5000
 
 # Start the application
-# ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
+
 CMD ["flask", "run", "--host=0.0.0.0"]
