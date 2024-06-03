@@ -1,18 +1,22 @@
-FROM surnet/alpine-python-wkhtmltopdf:3.12.3-0.12.6-small
+FROM python:3.12
 
 # working directory
 WORKDIR /backend
 
-# copy backend folder
+# install wkhtmltopdf and netcat
+RUN apt-get update && apt-get install -y netcat-openbsd wkhtmltopdf && rm -rf /var/lib/apt/lists/*
+
+# copy code
 COPY /backend .
 
 # install python dependencies
-RUN pip install -r ./app/requirements.txt
+RUN pip install --no-cache-dir -r ./app/requirements.txt 
 
-# Expose the port the app runs on
+# expose port
 EXPOSE 5000
 
-# Start the application
+# set the entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
 
+# run the app
 CMD ["flask", "run", "--host=0.0.0.0"]
